@@ -1,0 +1,22 @@
+#root{
+    user-select: none;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.fade-page-enter{
+    opacity: 0;
+}
+
+.fade-page-enter-active{
+    opacity: 1;
+    transition: opacity 100ms;
+}
+
+.fade-page-exit{
+    opacity: 1;
+}
+
+.fade-page-exit-active{
+    opacity: 0;
+    transition: opacity 100ms;
+}
