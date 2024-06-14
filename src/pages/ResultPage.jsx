@@ -20,7 +20,7 @@ function TextDivSmall({ name, value }) {
     )
 }
 
-export default function ResultPage({ setCurrentPage, resultData }) {
+export default function ResultPage({ setCurrentPage, resultData, isMobileScreen }) {
     const [showTransition, setShowTransition] = useState(true);
     const transitionTimeout = useRef(null);
 
@@ -57,10 +57,33 @@ export default function ResultPage({ setCurrentPage, resultData }) {
                             <TextDivLarge name={'acc'} value={`${resultData.accuracy}%`} />
 
                             <div className="mt-8 flex justify-between flex-wrap">
-                                <TextDivSmall name={'test type'} value={resultData.mode} />
-                                <TextDivSmall name={'raw wpm'} value={`${resultData.rawWpm}`} />
-                                <TextDivSmall name={'characters'} value={`${resultData.characters[0]}/${resultData.characters[1]}`} /> {/*correct/incorrect*/}
-                                <TextDivSmall name={'time'} value={`${resultData.time}s`} />
+
+                                {
+                                    isMobileScreen ? (
+                                        <>
+                                            <div>
+                                                <TextDivSmall name={'test type'} value={resultData.mode} />
+                                                <TextDivSmall name={'raw wpm'} value={`${resultData.rawWpm}`} />
+
+                                            </div>
+                                            <div>
+                                                <TextDivSmall name={'characters'} value={`${resultData.characters[0]}/${resultData.characters[1]}`} /> {/*correct/incorrect*/}
+                                                <TextDivSmall name={'time'} value={`${resultData.time}s`} />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <TextDivSmall name={'test type'} value={resultData.mode} />
+                                            <TextDivSmall name={'raw wpm'} value={`${resultData.rawWpm}`} />
+                                            <TextDivSmall name={'characters'} value={`${resultData.characters[0]}/${resultData.characters[1]}`} /> {/*correct/incorrect*/}
+                                            <TextDivSmall name={'time'} value={`${resultData.time}s`} />
+
+                                        </>
+                                    )
+                                }
+
+
+
                             </div>
 
                             <div className="mt-4 flex justify-center">

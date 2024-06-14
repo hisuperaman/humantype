@@ -20,7 +20,7 @@ function App() {
 
   const [resultData, setResultData] = useState({ rawWpm: 0, wpm: 0, accuracy: 0, characters: [0, 0], time: 0 });
 
-  const fullResultData = { ...resultData, mode: `${mode}${mode === 'time' ? totalTimer : totalWords}` };
+  const fullResultData = { ...resultData, mode: `${mode} ${mode === 'time' ? totalTimer : totalWords}` };
 
 
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -85,7 +85,7 @@ function App() {
 
         {
           currentPage === 'test' ? <TestPage key={testPageKey} setCurrentPage={setCurrentPage} mode={mode} setMode={setMode} totalTimer={totalTimer} setTotalTimer={setTotalTimer} totalWords={totalWords} setTotalWords={setTotalWords} setResultData={setResultData} windowWidth={windowWidth} isMobileScreen={isMobileScreen} setIsModalOpened={setIsModalOpened} isTyping={isTyping} setIsTyping={setIsTyping} />
-            : <ResultPage setCurrentPage={setCurrentPage} resultData={fullResultData} />
+            : <ResultPage setCurrentPage={setCurrentPage} resultData={fullResultData} isMobileScreen={isMobileScreen} />
         }
 
       </div>
