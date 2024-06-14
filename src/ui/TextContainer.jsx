@@ -195,7 +195,7 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
             const scrollableDivRect = scrollableDiv.getBoundingClientRect();
             const cursorTopFromDiv = cursorTop - (scrollableDivRect.top + window.scrollY);
 
-            // console.log(lineHeight, cursorTop, scrollableDivRect.top, cursorTopFromDiv)
+            console.log(lineHeight, cursorTop, scrollableDivRect.top, cursorTopFromDiv)
 
             if (cursorTopFromDiv > lineHeight * 2 && cursorTopFromDiv < lineHeight * 3) {
                 const offset = 6.54547119140625; // got by subtracting the old value of cursorTop with new value
@@ -208,7 +208,7 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
     return (
         <>
-            <div className="text-3xl text-light-active dark:text-dark-active h-10">
+            <div className="text-3xl text-light-active dark:text-dark-active h-10 p-2">
                 {startTime ? (mode === 'time' ? timer : `${wordsTyped}/${totalWords}`) : ''}
             </div>
             <div onClick={handleContainerClick} ref={containerRef} className={`p-2 leading-[3em] max-h-[10.8rem] h-[10.8rem] overflow-hidden ${showTextTransition ? 'opacity-0' : 'opacity-1'} transition duration-100`}>
@@ -222,8 +222,8 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
                         <span className="text-4xl whitespace-pre">                                                                                                                                      </span>
 
                         {
-                            (inputText.length < sampleText.length && (currentCharacterPos.left >= 0 && currentCharacterPos.top + 4 >= containerRef.current.getBoundingClientRect().top)) &&
-                            <div className={`bg-light-active dark:bg-dark-active inline-block h-12 w-[2px] absolute transition-all duration-100 ${!startTime ? 'animate-fade' : ''}`} style={{ left: `${currentCharacterPos.left}px`, top: `${currentCharacterPos.top + 3}px` }}></div>
+                            (inputText.length < sampleText.length && (currentCharacterPos.left >= 0 && currentCharacterPos.top >= containerRef.current.getBoundingClientRect().top)) &&
+                            <div className={`bg-light-active dark:bg-dark-active inline-block h-8 w-[2px] absolute transition-all duration-100 ${!startTime ? 'animate-fade' : ''}`} style={{ left: `${currentCharacterPos.left}px`, top: `${currentCharacterPos.top + 5}px` }}></div>
                         }
                     </>
                 )}
