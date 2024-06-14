@@ -14,8 +14,6 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
     const [inputText, setInputText] = useState('');
     const [charactersStatus, setCharactersStatus] = useState([]);
-    const [isBackspacePressed, setIsBackspacePressed] = useState(false);
-
 
     const [startTime, setStartTime] = useState(null);
 
@@ -26,17 +24,28 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
     const [isResetClicked, setIsResetClicked] = useState(false);
 
+    const [sampleText, setSampleText] = useState('');
 
-    const timeModeHookProps = useTimeMode(totalTimer, startTime, mode === 'time', stopTest, isResetClicked);
+    const timeModeHookProps = useTimeMode(totalTimer, startTime, mode === 'time', stopTest, isResetClicked, inputText, sampleText);
     const wordsModeHookProps = useWordsMode(totalWords, inputText, mode === 'words', isResetClicked);
 
-    const { sampleText: timeModeSampleText, timer, setTimer } = timeModeHookProps;
+    const { sampleText: timeModeSampleText, extraText, timer, setTimer } = timeModeHookProps;
     const { sampleText: wordsModeSampleText, wordsTyped } = wordsModeHookProps;
 
-    const [sampleText, setSampleText] = useState(mode === 'time' ? timeModeSampleText : wordsModeSampleText);
 
     const textChangeTimeout = useRef(null);
 
+
+    useEffect(()=>{
+        if(extraText.length>0){
+            setSampleText((prevSampleText)=>prevSampleText+extraText);
+    
+            setCharactersStatus((prevCharactersStatus)=>{
+                const newCharactersStatus = Array(extraText.length).fill(null);
+                return [...prevCharactersStatus, ...newCharactersStatus];
+            });
+        }
+    }, [extraText]);
 
     useEffect(() => {
         if (textChangeTimeout.current) {
@@ -91,8 +100,10 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
     // set the charactersStatus value to an array of null values based on sampleText length
     useEffect(() => {
-        setCharactersStatus(Array(sampleText.length).fill(null));
-    }, [sampleText]);
+        if(extraText.length<=0){
+            setCharactersStatus(Array(sampleText.length).fill(null));
+        }
+    }, [sampleText, extraText]);
 
 
     useEffect(() => {
@@ -101,7 +112,7 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
                 stopTest();
             }
         }
-    }, [charactersStatus, inputText, sampleText]);
+    }, [inputText, sampleText]);
 
 
 
@@ -195,7 +206,7 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
             const scrollableDivRect = scrollableDiv.getBoundingClientRect();
             const cursorTopFromDiv = cursorTop - (scrollableDivRect.top + window.scrollY);
 
-            console.log(lineHeight, cursorTop, scrollableDivRect.top, cursorTopFromDiv)
+            // console.log(lineHeight, cursorTop, scrollableDivRect.top, cursorTopFromDiv)
 
             if (cursorTopFromDiv > lineHeight * 2 && cursorTopFromDiv < lineHeight * 3) {
                 const offset = 6.54547119140625; // got by subtracting the old value of cursorTop with new value

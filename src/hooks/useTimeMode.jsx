@@ -1,20 +1,32 @@
 import { useState, useRef, useEffect } from "react";
 import { getRandomWords } from "../lib/utils";
 
-export default function useTimeMode(totalTimer, startTime, isModeActive, stopTest, isResetClicked) {
+export default function useTimeMode(totalTimer, startTime, isModeActive, stopTest, isResetClicked, inputText, realSampleText) {
     const [sampleText, setSampleText] = useState('');
 
     const intervalRef = useRef(null);
     const [timer, setTimer] = useState(totalTimer);
-    
+
+    const [extraText, setExtraText] = useState('');
+
     useEffect(() => {
         if (isModeActive && isResetClicked) {
-            let randomWords = getRandomWords(150);
+            let randomWords = getRandomWords(50);
             let sentence = randomWords.join(" ");
             setSampleText(sentence);
+            setExtraText('');
+        }
+    }, [isResetClicked, isModeActive]);
+
+    useEffect(() => {
+        if (isModeActive && (realSampleText.length > 0 && inputText.length === realSampleText.length - (4 * 40))) {
+            // console.log('extra')
+            let randomWords = getRandomWords(50);
+            let sentence = randomWords.join(" ");
+            setExtraText(' ' + sentence);
 
         }
-    }, [isResetClicked, isModeActive])
+    }, [isModeActive, realSampleText, inputText]);
 
 
     // start the timer whenever startTime is set
@@ -42,6 +54,6 @@ export default function useTimeMode(totalTimer, startTime, isModeActive, stopTes
     }, [timer]);
 
 
-    return { sampleText, timer, setTimer };
+    return { sampleText, extraText, timer, setTimer };
 
 }
