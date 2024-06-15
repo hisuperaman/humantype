@@ -36,11 +36,11 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
     const textChangeTimeout = useRef(null);
 
 
-    useEffect(()=>{
-        if(extraText.length>0){
-            setSampleText((prevSampleText)=>prevSampleText+extraText);
-    
-            setCharactersStatus((prevCharactersStatus)=>{
+    useEffect(() => {
+        if (extraText.length > 0) {
+            setSampleText((prevSampleText) => prevSampleText + extraText);
+
+            setCharactersStatus((prevCharactersStatus) => {
                 const newCharactersStatus = Array(extraText.length).fill(null);
                 return [...prevCharactersStatus, ...newCharactersStatus];
             });
@@ -100,7 +100,7 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
     // set the charactersStatus value to an array of null values based on sampleText length
     useEffect(() => {
-        if(extraText.length<=0){
+        if (extraText.length <= 0) {
             setCharactersStatus(Array(sampleText.length).fill(null));
         }
     }, [sampleText, extraText]);
@@ -206,16 +206,18 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
             const scrollableDivRect = scrollableDiv.getBoundingClientRect();
             const cursorTopFromDiv = cursorTop - (scrollableDivRect.top + window.scrollY);
 
-            console.log(lineHeight, cursorTop, scrollableDivRect.top, cursorTopFromDiv)
+            // console.log(lineHeight, cursorTop, scrollableDivRect.top + window.scrollY, cursorTopFromDiv)
 
             if (cursorTopFromDiv > lineHeight * 2 && cursorTopFromDiv < lineHeight * 3) {
-                const offset = 6.54547119140625; // got by subtracting the old value of cursorTop with new value
-                scrollableDiv.scrollTop += lineHeight;
+
+                let currentScrollTop = Math.round(scrollableDiv.scrollTop);
+                let lineHeightInt = Math.round(lineHeight);
+                scrollableDiv.scrollTop = Math.round(currentScrollTop + lineHeightInt);
+
                 setScrollableDivScrollTop(scrollableDiv.scrollTop);
             }
         }
-    }, [inputText, containerRef, currentCharacterPos]);
-
+    }, [containerRef, currentCharacterPos]);
 
     return (
         <>
