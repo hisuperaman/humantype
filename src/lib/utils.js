@@ -8,12 +8,12 @@ export function getWpm(startTime, endTime, typedWords, characters) {
     const timeDiff = (endTime - startTime) / 1000;
     const minutes = timeDiff / 60;
 
-    const rawWpm = (typedWords / minutes).toFixed(1);
+    const rawWpm = (typedWords / minutes);
 
     const accuracy = (characters[0] / (characters[0] + characters[1])) * 100; // correct characters divided by total characters
     const wpm = rawWpm * (accuracy / 100);
 
-    return { rawWpm: Math.round(rawWpm), accuracy: Math.round(accuracy), wpm: Math.round(wpm), time: Math.round(timeDiff) };
+    return { rawWpm: rawWpm.toFixed(1), accuracy: accuracy.toFixed(1), wpm: wpm.toFixed(1), time: timeDiff.toFixed(1) };
 }
 
 export function getCharactersData(charactersStatus) {

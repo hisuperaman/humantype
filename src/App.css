@@ -20,3 +20,21 @@
     opacity: 0;
     transition: opacity 100ms;
 }
+
+.tool-tip-enter{
+    opacity: 0;
+}
+
+.tool-tip-enter-active{
+    opacity: 1;
+    transition: opacity 100ms;
+}
+
+.tool-tip-exit{
+    opacity: 1;
+}
+
+.tool-tip-exit-active{
+    opacity: 0;
+    transition: opacity 100ms;
+}

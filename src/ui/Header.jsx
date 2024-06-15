@@ -23,7 +23,7 @@ export default function Header({ currentPage, setCurrentPage, reRenderTestPage, 
                 </span>
                 <span className={`${isTyping ? 'text-light-icon dark:text-dark-icon': 'text-light-hover dark:text-dark-hover'} ${isMobileScreen ? 'hidden' : ''} ml-2`}>humantype</span>
             </div>
-            <div className="ml-4 flex">
+            <div className="ml-2 flex">
                 <Button icon={<KeyboardIcon />} onButtonClick={handleRestartClick} hide={isTyping} />
                 <Button icon={<GearIcon />} hide={isTyping} />
             </div>
