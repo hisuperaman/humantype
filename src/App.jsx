@@ -3,6 +3,8 @@ import Header from './ui/Header'
 import TestPage from './pages/TestPage'
 import ResultPage from './pages/ResultPage'
 import { useState, useEffect } from 'react'
+import Link from './ui/common/Link'
+import Footer from './ui/Footer'
 
 
 function App() {
@@ -80,7 +82,7 @@ function App() {
           </div>
         )
       }
-      <div className={`flex flex-col min-h-screen bg-light-primary dark:bg-dark-primary text-white px-14 py-8 ${isTyping ? 'cursor-none' : 'cursor-default'} transition-all duration-100`}>
+      <div className={`flex flex-col min-h-screen bg-light-primary dark:bg-dark-primary text-white px-14 pt-8 pb-2 ${isTyping ? 'cursor-none' : 'cursor-default'} transition-all duration-100`}>
         <Header currentPage={currentPage} setCurrentPage={setCurrentPage} reRenderTestPage={handleTestPageReRender} isMobileScreen={isMobileScreen} isTyping={isTyping} />
 
         {
@@ -88,6 +90,8 @@ function App() {
             : <ResultPage setCurrentPage={setCurrentPage} resultData={fullResultData} isMobileScreen={isMobileScreen} />
         }
 
+
+        <Footer isTyping={isTyping} />
       </div>
     </>
   )
