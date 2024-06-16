@@ -3,7 +3,7 @@ import HeartIcon from "./icons/HeartIcon";
 
 export default function Footer({ isTyping }) {
     return (
-        <div className='mt-auto py-2'>
+        <div className='mt-auto py-2 transition-all duration-100'>
 
             <div className={`flex justify-center items-center text-sm`}>
                 <span className={`${isTyping ? 'text-light-icon dark:text-dark-icon' : ''} whitespace-pre flex items-center transition-all duration-100`}>
