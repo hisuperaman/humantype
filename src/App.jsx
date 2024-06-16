@@ -82,16 +82,19 @@ function App() {
           </div>
         )
       }
-      <div className={`flex flex-col min-h-screen bg-light-primary dark:bg-dark-primary text-white px-14 pt-8 pb-2 ${isTyping ? 'cursor-none' : 'cursor-default'} transition-all duration-100`}>
-        <Header currentPage={currentPage} setCurrentPage={setCurrentPage} reRenderTestPage={handleTestPageReRender} isMobileScreen={isMobileScreen} isTyping={isTyping} />
+      <div className='bg-light-primary dark:bg-dark-primary'>
+        <div className={`flex flex-col min-h-screen text-white m-auto px-12 max-w-[90rem] pt-8 pb-2 ${isTyping ? 'cursor-none' : 'cursor-default'} transition-all duration-100`}>
+          <Header currentPage={currentPage} setCurrentPage={setCurrentPage} reRenderTestPage={handleTestPageReRender} isMobileScreen={isMobileScreen} isTyping={isTyping} />
 
-        {
-          currentPage === 'test' ? <TestPage key={testPageKey} setCurrentPage={setCurrentPage} mode={mode} setMode={setMode} totalTimer={totalTimer} setTotalTimer={setTotalTimer} totalWords={totalWords} setTotalWords={setTotalWords} setResultData={setResultData} windowWidth={windowWidth} isMobileScreen={isMobileScreen} setIsModalOpened={setIsModalOpened} isTyping={isTyping} setIsTyping={setIsTyping} />
-            : <ResultPage setCurrentPage={setCurrentPage} resultData={fullResultData} isMobileScreen={isMobileScreen} />
-        }
+          {
+            currentPage === 'test' ? <TestPage key={testPageKey} setCurrentPage={setCurrentPage} mode={mode} setMode={setMode} totalTimer={totalTimer} setTotalTimer={setTotalTimer} totalWords={totalWords} setTotalWords={setTotalWords} setResultData={setResultData} windowWidth={windowWidth} isMobileScreen={isMobileScreen} setIsModalOpened={setIsModalOpened} isTyping={isTyping} setIsTyping={setIsTyping} />
+              : <ResultPage setCurrentPage={setCurrentPage} resultData={fullResultData} isMobileScreen={isMobileScreen} />
+          }
 
 
-        <Footer isTyping={isTyping} />
+          <Footer isTyping={isTyping} />
+        </div>
+
       </div>
     </>
   )
