@@ -50,7 +50,7 @@ export default function MobileMenuBar({ mobileMenuRef, mode, setMode, totalTimer
     }
 
     return (
-        <div ref={mobileMenuRef} className="z-10 top-[10%] left-[15%] absolute rounded-xl w-[70%] h-[80%] bg-dark-primary overflow-y-scroll">
+        <div ref={mobileMenuRef} className="z-10 top-[10%] left-[15%] absolute rounded-xl w-[70%] h-[80%] bg-light-primary dark:bg-dark-primary overflow-y-scroll">
             <div className="flex flex-col p-4">
                 <ButtonGroupContainer>
                     <ButtonLong text={'time'} isActive={mode === 'time'} onButtonClick={handleTimeMenuClick} />

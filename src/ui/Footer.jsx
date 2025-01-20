@@ -6,7 +6,7 @@ export default function Footer({ isTyping }) {
         <div className='mt-auto py-2 transition-all duration-100'>
 
             <div className={`flex justify-center items-center text-sm`}>
-                <span className={`${isTyping ? 'text-light-icon dark:text-dark-icon' : ''} whitespace-pre flex items-center transition-all duration-100`}>
+                <span className={`${isTyping ? 'text-light-icon dark:text-dark-icon' : 'text-light-footerText dark:text-dark-footerText'} whitespace-pre flex items-center transition-all duration-100`}>
                     Developed with
                     <span className={`whitespace-pre mx-3 ${isTyping ? 'text-dark-icon' : 'text-dark-active'} transition-all duration-100`}>
                         <HeartIcon />
