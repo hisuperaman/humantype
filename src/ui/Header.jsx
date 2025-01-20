@@ -15,9 +15,19 @@ export default function Header({ currentPage, setCurrentPage, reRenderTestPage, 
         }
     }
 
+    function handleLogoClick() {
+        const htmlElement = document.querySelector('html')
+        if(htmlElement.className == 'dark') {
+            htmlElement.className = 'light'
+        }
+        else {
+            htmlElement.className = 'dark'
+        }
+    }
+
     return (
         <div className="flex items-center">
-            <div className={`text-3xl flex items-center cursor-pointer`}>
+            <div className={`text-3xl flex items-center cursor-pointer`} onClick={handleLogoClick}>
                 <span className={`${isTyping ? 'text-light-icon dark:text-dark-icon': 'text-light-active dark:text-dark-active'}`}>
                     <AppLogo />
                 </span>

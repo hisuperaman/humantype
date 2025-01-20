@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -15,7 +16,19 @@ export default {
           active: '#E2B714',
           danger: '#CA4754',
           unfocused: 'rgb(25,26,27,0.5)',
+          footerText: 'white'
+        },
+        light: {
+          primary: '#F5F5F5',
+          secondary: '#E8E8E8',
+          icon: '#7A7A7A',
+          hover: '#D1D0C5',
+          active: '#E2B714',
+          danger: '#CA4754',
+          unfocused: 'rgba(220,220,220,0.5)',
+          footerText: 'black'
         }
+        
       }
     },
     keyframes: {
