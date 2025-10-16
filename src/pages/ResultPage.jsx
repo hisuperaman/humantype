@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Button from "../ui/common/Button"
 import RestartIcon from "../ui/icons/RestartIcon"
 import { CSSTransition } from "react-transition-group"
+import Graph from "../ui/Graph";
 
 
 function ToolTip({ isVisible, text }) {
@@ -78,9 +79,13 @@ function TextDivSmall({ name, value, toolTipText }) {
     )
 }
 
-export default function ResultPage({ setCurrentPage, resultData, isMobileScreen }) {
+export default function ResultPage({ setCurrentPage, totalTimer, totalWords, mode, resultHistory, isMobileScreen }) {
     const [showTransition, setShowTransition] = useState(true);
     const transitionTimeout = useRef(null);
+
+    const resultDataRaw = resultHistory.at(-1);
+    const resultData = resultDataRaw ? { ...resultDataRaw, mode: `${mode} ${mode === 'time' ? totalTimer : totalWords}` } : { rawWpm: 0, wpm: 0, accuracy: 0, typedWords: 0, characters: [0, 0], time: 0 };
+
 
 
     useEffect(() => {
@@ -104,6 +109,8 @@ export default function ResultPage({ setCurrentPage, resultData, isMobileScreen 
         setCurrentPage('test');
     }
 
+    const graphCoords = resultHistory.map(r => ({ x: r.time, y: r.wpm }));
+
     return (
         <>
             <div className={`mt-20 ${showTransition ? 'opacity-0' : 'opacity-1'} transition-all duration-100`}>
@@ -111,8 +118,16 @@ export default function ResultPage({ setCurrentPage, resultData, isMobileScreen 
                 {
                     !showTransition && (
                         <>
-                            <TextDivLarge name={'wpm'} value={Math.round(resultData.wpm)} toolTipText={resultData.wpm + ' wpm'} />
-                            <TextDivLarge name={'acc'} value={`${Math.round(resultData.accuracy)}%`} toolTipText={resultData.accuracy + '%'} />
+                            <div className="flex flex-col lg:flex-row items-center gap-16">
+                                <div>
+                                    <TextDivLarge name={'wpm'} value={Math.round(resultData.wpm)} toolTipText={resultData.wpm + ' wpm'} />
+                                    <TextDivLarge name={'acc'} value={`${Math.round(resultData.accuracy)}%`} toolTipText={resultData.accuracy + '%'} />
+                                </div>
+
+                                <div className="w-full lg:h-[30rem] flex justify-center">
+                                    <Graph coords={graphCoords} />
+                                </div>
+                            </div>
 
                             <div className="mt-8 flex justify-between flex-wrap">
 
@@ -140,8 +155,6 @@ export default function ResultPage({ setCurrentPage, resultData, isMobileScreen 
                                     )
                                 }
 
-
-
                             </div>
 
                             <div className="mt-4 flex justify-center">
@@ -150,7 +163,6 @@ export default function ResultPage({ setCurrentPage, resultData, isMobileScreen 
                         </>
                     )
                 }
-
 
             </div>
         </>

@@ -6,7 +6,7 @@ import useWordsMode from "../hooks/useWordsMode";
 import Button from "./common/Button";
 import RestartIcon from "./icons/RestartIcon";
 
-export default function TextContainer({ mode, totalTimer, totalWords, showTextTransition, setShowTextTransition, setCurrentPage, setResultData, windowWidth, setIsTyping }) {
+export default function TextContainer({ mode, totalTimer, totalWords, showTextTransition, setShowTextTransition, setCurrentPage, setResultHistory, windowWidth, isTyping, setIsTyping }) {
 
     const inputRef = useRef(null);
     const containerRef = useRef(null);
@@ -26,7 +26,9 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
     const [sampleText, setSampleText] = useState('');
 
-    const timeModeHookProps = useTimeMode(totalTimer, startTime, mode === 'time', stopTest, isResetClicked, inputText, sampleText);
+    const intervalRef = useRef(null);
+
+    const timeModeHookProps = useTimeMode(totalTimer, mode === 'time', isResetClicked, inputText, sampleText);
     const wordsModeHookProps = useWordsMode(totalWords, inputText, mode === 'words', isResetClicked);
 
     const { sampleText: timeModeSampleText, extraText, timer, setTimer } = timeModeHookProps;
@@ -34,6 +36,8 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
 
     const textChangeTimeout = useRef(null);
+    const charactersRef = useRef(null);
+    const typedWordsRef = useRef(null);
 
 
     useEffect(() => {
@@ -123,6 +127,7 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
         let isFirstLetter = false;
         if (!startTime && inputText.length === 0) {
             const currentTime = new Date();
+            setResultHistory([]);
             setStartTime(currentTime);
             isFirstLetter = true;
         }
@@ -159,25 +164,7 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
 
     // stops the test
     function stopTest() {
-        const currentTime = new Date();
-        const characters = getCharactersData(charactersStatus);
-
-        const typedWords = inputText.split('').reduce((acc, value, index) => {
-            if (value === ' ' && sampleText[index] === ' ') {
-                return acc + 1;
-            }
-            else {
-                return acc;
-            }
-        }, 0);
-
-        const theWpm = getWpm(startTime, currentTime, typedWords, characters);
         setStartTime(null);
-
-
-        setResultData((prevResultData) => {
-            return { ...prevResultData, characters, rawWpm: theWpm.rawWpm, accuracy: theWpm.accuracy, wpm: theWpm.wpm, time: theWpm.time }
-        });
 
         setIsTyping(false);
         setCurrentPage('result');
@@ -206,8 +193,6 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
             const scrollableDivRect = scrollableDiv.getBoundingClientRect();
             const cursorTopFromDiv = cursorTop - (scrollableDivRect.top + window.scrollY);
 
-            // console.log(lineHeight, cursorTop, scrollableDivRect.top + window.scrollY, cursorTopFromDiv)
-
             if (cursorTopFromDiv > lineHeight * 2 && cursorTopFromDiv < lineHeight * 3) {
 
                 let currentScrollTop = Math.round(scrollableDiv.scrollTop);
@@ -218,6 +203,51 @@ export default function TextContainer({ mode, totalTimer, totalWords, showTextTr
             }
         }
     }, [containerRef, currentCharacterPos]);
+
+
+    // start the timer whenever startTime is set
+    useEffect(() => {
+        if (startTime) {
+            intervalRef.current = setInterval(() => {
+                if (mode === 'time') setTimer((prevTimer) => prevTimer - 1)
+
+                const currentTime = new Date();
+                const characters = charactersRef.current;
+                const typedWords = typedWordsRef.current;
+                
+                const theWpm = getWpm(startTime, currentTime, typedWords, characters);
+                setResultHistory((prev) => [...prev, { characters, typedWords, rawWpm: theWpm.rawWpm, accuracy: theWpm.accuracy, wpm: theWpm.wpm, time: theWpm.time }]);
+
+            }, 1000);
+        }
+
+        return () => {
+            return clearInterval(intervalRef.current);
+        }
+    }, [startTime]);
+
+    useEffect(() => {
+        charactersRef.current = getCharactersData(charactersStatus);
+        typedWordsRef.current = inputText.split('').reduce((acc, value, index) => {
+            if (value === ' ' && sampleText[index] === ' ') {
+                return acc + 1;
+            }
+            else {
+                return acc;
+            }
+        }, 0);
+    }, [charactersStatus, inputText]);
+
+
+    // stop test when the timer becomes 0
+    useEffect(() => {
+        if (timer <= 0) {
+            clearInterval(intervalRef.current);
+
+            stopTest();
+
+        }
+    }, [timer]);
 
     return (
         <>

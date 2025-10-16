@@ -3,7 +3,6 @@ import Header from './ui/Header'
 import TestPage from './pages/TestPage'
 import ResultPage from './pages/ResultPage'
 import { useState, useEffect } from 'react'
-import Link from './ui/common/Link'
 import Footer from './ui/Footer'
 
 
@@ -20,11 +19,8 @@ function App() {
   const [totalTimer, setTotalTimer] = useState(30);
   const [totalWords, setTotalWords] = useState(25);
 
-  const [resultData, setResultData] = useState({ rawWpm: 0, wpm: 0, accuracy: 0, characters: [0, 0], time: 0 });
-
-  const fullResultData = { ...resultData, mode: `${mode} ${mode === 'time' ? totalTimer : totalWords}` };
-
-
+  const [resultHistory, setResultHistory] = useState([]);
+  
   const [isModalOpened, setIsModalOpened] = useState(false);
 
 
@@ -87,8 +83,8 @@ function App() {
           <Header currentPage={currentPage} setCurrentPage={setCurrentPage} reRenderTestPage={handleTestPageReRender} isMobileScreen={isMobileScreen} isTyping={isTyping} />
 
           {
-            currentPage === 'test' ? <TestPage key={testPageKey} setCurrentPage={setCurrentPage} mode={mode} setMode={setMode} totalTimer={totalTimer} setTotalTimer={setTotalTimer} totalWords={totalWords} setTotalWords={setTotalWords} setResultData={setResultData} windowWidth={windowWidth} isMobileScreen={isMobileScreen} setIsModalOpened={setIsModalOpened} isTyping={isTyping} setIsTyping={setIsTyping} />
-              : <ResultPage setCurrentPage={setCurrentPage} resultData={fullResultData} isMobileScreen={isMobileScreen} />
+            currentPage === 'test' ? <TestPage key={testPageKey} setCurrentPage={setCurrentPage} mode={mode} setMode={setMode} totalTimer={totalTimer} setTotalTimer={setTotalTimer} totalWords={totalWords} setTotalWords={setTotalWords} setResultHistory={setResultHistory} windowWidth={windowWidth} isMobileScreen={isMobileScreen} setIsModalOpened={setIsModalOpened} isTyping={isTyping} setIsTyping={setIsTyping} />
+              : <ResultPage setCurrentPage={setCurrentPage} totalTimer={totalTimer} totalWords={totalWords} mode={mode} resultHistory={resultHistory} isMobileScreen={isMobileScreen} />
           }
 
           <Footer isTyping={isTyping} />
